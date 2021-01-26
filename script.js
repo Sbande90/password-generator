@@ -1,11 +1,13 @@
 window.addEventListener('load', function(){
 // Assignment Code
 var generateBtn = document.querySelector("#generate");
-var upperAndLower = false;
+var upper = false;
+var lower = false;
 var userInput = "";
 var userNumeric = "";
 var userCharacters = "";
-var alpha = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+var alpha = "abcdefghijklmnopqrstuvwxyz";
+var alpha2 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 var numeric = "0123456789";
 var special = "!@#$%^&*()_+:?";
 // Write password to the #password input
@@ -15,26 +17,39 @@ function writePassword() {
 
 }
 
-function generatePassword() {
-
- upperAndLower = confirm("would you like to use upper and lowercase?");
- console.log(upperAndLower);
- userInput = prompt("how would you like the password to be?", "8");
- console.log(userInput);
- 
- userNumeric = confirm("would you like to use a numeric ?");
- userCharacters = confirm("would you like to use a special characters?");
- if(userInput>=8 && userInput<=128){
-  createPassword();
-}else{
- validatedUserInput();
-}
-}
-
 function validatedUserInput(){
   userInput = prompt("password must be at least 8 characters and no more than 128 characters", "8");
+  if (!userInput){
+    return;
+  }
   if(userInput>=8 && userInput<=128){
-    createPassword();
+    generatePassword();
+  }else{
+   validatedUserInput();
+  }
+}
+
+
+function generatePassword() {
+ upper = confirm("would you like to use uppercase?");
+ lower = confirm("would you like to use lowercase?");
+ if(!upper && !lower){
+   return;
+ }
+ else{
+  userCharacters = confirm("would you like to use a special characters?");
+  createPassword();
+}
+}
+
+function showQuestions(){
+  userInput = prompt("how would you like the password to be?", "8");
+  if (!userInput){
+    return;
+  }
+  // userInput = prompt("password must be at least 8 characters and no more than 128 characters", "8");
+  if(userInput>=8 && userInput<=128){
+    generatePassword();
   }else{
    validatedUserInput();
   }
@@ -42,7 +57,13 @@ function validatedUserInput(){
 
 function createPassword (){
   var password = "";
-  var base = alpha; 
+  var base = ""; 
+  if (upper){
+    base = base + alpha2
+  }
+  if (lower){
+    base = base + alpha
+  }
   if (userNumeric==true){
     base = base+numeric
 
@@ -61,7 +82,7 @@ function createPassword (){
   console.log(password)
 }
 // Add event listener to generate button
-generateBtn.addEventListener("click", writePassword);
+generateBtn.addEventListener("click", showQuestions);
 }, false )
 
 
